@@ -1,0 +1,486 @@
+/* ==========================================================================
+   Farida's 1st Birthday — "a little sunshine is turning ONE"
+   Theme tokens, page skeleton rhythm, and the invitation-style hero.
+   No dependencies. Mobile-first: 375px base, enhancements at 700px / 1100px.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  --sun: #FFC93C; --sun-soft: #FFE08A; --cream: #FFF3DC; --cloud: #FFFFFF;
+  --marigold: #E8842C; --brown: #6B4226; --pink: #E85D8A; --lilac: #A99BE0;
+  --font-display: "Fredoka", sans-serif;
+  --font-script: "Caveat", cursive;
+  --font-body: "Nunito", sans-serif;
+
+  /* Shared decorative art, drawn once and reused as background layers. */
+  --daisy: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23FFFFFF'><ellipse cx='50' cy='27' rx='9.5' ry='22'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(36 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(72 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(108 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(144 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(180 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(216 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(252 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(288 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(324 50 50)'/></g><circle cx='50' cy='50' r='13.5' fill='%23E85D8A'/></svg>");
+
+  --hat: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 150'><g fill='%23FFFFFF'><rect x='16' y='113' width='6.5' height='17' rx='3.2' transform='rotate(-19 19 113)'/><rect x='27' y='117' width='6.5' height='17' rx='3.2' transform='rotate(-14 30 117)'/><rect x='38' y='120' width='6.5' height='17' rx='3.2' transform='rotate(-8 41 120)'/><rect x='49' y='122' width='6.5' height='17' rx='3.2' transform='rotate(-3 52 122)'/><rect x='61' y='122' width='6.5' height='17' rx='3.2' transform='rotate(3 64 122)'/><rect x='72' y='120' width='6.5' height='17' rx='3.2' transform='rotate(8 75 120)'/><rect x='83' y='117' width='6.5' height='17' rx='3.2' transform='rotate(14 86 117)'/><rect x='94' y='113' width='6.5' height='17' rx='3.2' transform='rotate(19 97 113)'/></g><path d='M60 24 L106 118 Q60 133 14 118 Z' fill='%23A99BE0'/><path d='M29 99 Q39 90 49 99 T69 99 T89 100' fill='none' stroke='%23E85D8A' stroke-width='5.5' stroke-linecap='round'/><path d='M45 71 Q53 65 61 71' fill='none' stroke='%23E85D8A' stroke-width='4.5' stroke-linecap='round'/><g fill='%23FFFFFF' transform='translate(60 21)'><rect x='-13' y='-4' width='26' height='8' rx='4'/><rect x='-13' y='-4' width='26' height='8' rx='4' transform='rotate(45)'/><rect x='-13' y='-4' width='26' height='8' rx='4' transform='rotate(90)'/><rect x='-13' y='-4' width='26' height='8' rx='4' transform='rotate(135)'/><circle r='9'/></g></svg>");
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset + base
+   -------------------------------------------------------------------------- */
+
+* { box-sizing: border-box; margin: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--sun);
+  color: var(--brown);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+img { max-width: 100%; }
+
+:focus-visible {
+  outline: 3px solid var(--brown);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Sky decor — drifting clouds + floating balloons behind everything
+   -------------------------------------------------------------------------- */
+
+.sky-decor {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cloud {
+  position: absolute;
+  left: 0;
+  width: 120px;
+  height: 40px;
+  background: var(--cloud);
+  border-radius: 60px;
+  opacity: 0.35;
+  will-change: transform;
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud::before { width: 58px; height: 58px; left: 16px; top: -26px; }
+.cloud::after  { width: 40px; height: 40px; right: 18px; top: -18px; }
+
+.cloud-1 { top: 5%;  transform: translateX(-30vw) scale(0.8);  opacity: 0.42; }
+.cloud-2 { top: 37%; transform: translateX(-30vw) scale(0.55); opacity: 0.34; }
+.cloud-3 { top: 58%; transform: translateX(-30vw) scale(1.05); opacity: 0.3; }
+.cloud-4 { top: 79%; transform: translateX(-30vw) scale(0.7);  opacity: 0.28; }
+
+.balloon {
+  display: none;
+  position: absolute;
+  width: 58px;
+  height: 72px;
+  border-radius: 50% 50% 48% 48% / 58% 58% 44% 44%;
+  background:
+    radial-gradient(circle at 34% 27%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 46%),
+    var(--sun-soft);
+  opacity: 0.92;
+}
+
+/* Knot under the balloon. */
+.balloon::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 8px solid currentColor;
+  color: inherit;
+}
+
+/* String. */
+.balloon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 2px;
+  height: 62px;
+  margin-top: 4px;
+  transform: translateX(-50%);
+  background: linear-gradient(rgba(107, 66, 38, 0.32), rgba(107, 66, 38, 0));
+  border-radius: 2px;
+}
+
+.balloon-1 { top: 9%;  left: 2.2%;  color: #F3D98C; }
+.balloon-2 { top: 30%; left: 5.5%;  color: #FFFFFF; background: radial-gradient(circle at 34% 27%, rgba(255,255,255,0.95), rgba(255,255,255,0) 46%), var(--cloud); width: 46px; height: 58px; opacity: 0.9; }
+.balloon-3 { top: 13%; right: 2.4%; color: #FFFFFF; background: radial-gradient(circle at 34% 27%, rgba(255,255,255,0.95), rgba(255,255,255,0) 46%), var(--cloud); }
+.balloon-4 { top: 37%; right: 6%;   color: #F3D98C; width: 44px; height: 55px; }
+
+/* --------------------------------------------------------------------------
+   4. Hero — a web recreation of the paper invitation
+   -------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding: clamp(2.75rem, 11vw, 5.5rem) clamp(1rem, 5vw, 2.5rem) clamp(5rem, 14vw, 8rem);
+  text-align: center;
+  isolation: isolate;
+}
+
+/* Warm glow behind the ONE, like light off the page. */
+.hero::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(125vw, 880px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--sun-soft) 0%, rgba(255, 224, 138, 0) 63%);
+  opacity: 0.7;
+  z-index: -2;
+}
+
+/* Cloud-scalloped hand-off into the first cream section. */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 58px;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 32px 40px, var(--cream) 29px, rgba(255, 243, 220, 0) 31px)
+      0 0 / 64px 58px repeat-x,
+    linear-gradient(var(--cream), var(--cream)) 0 100% / 100% 20px no-repeat;
+}
+
+.hero-daisies {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--daisy), var(--daisy), var(--daisy), var(--daisy), var(--daisy), var(--daisy);
+  background-repeat: no-repeat;
+  background-size: 96px, 58px, 74px, 44px, 84px, 50px;
+  background-position:
+    -26px 1.5%,
+    23% -14px,
+    calc(100% + 14px) 4%,
+    72% 1%,
+    -18px 87%,
+    calc(100% - 10px) 90%;
+}
+
+/* --- kicker: spaced marigold caps flanked by pink sparkle marks ---------- */
+
+.hero-kicker {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(0.78rem, 3.4vw, 1.2rem);
+  color: var(--marigold);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  text-align: center;
+  line-height: 1.5;
+  /* Keeps the kicker to a comfortable two-line measure on phones so the
+     sparkle marks stay beside the words instead of out at the daisies. */
+  max-width: min(100%, 12.5rem);
+  margin: 0 auto;
+}
+
+.hero-kicker::before,
+.hero-kicker::after {
+  content: "✳";
+  display: inline-block;
+  color: var(--pink);
+  font-size: 0.95em;
+  letter-spacing: 0;
+  text-indent: 0;
+}
+
+.hero-kicker::before { margin-right: 1em; }
+.hero-kicker::after  { margin-left: 1em; }
+
+/* --- the giant ONE ------------------------------------------------------- */
+
+.hero-one {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(6rem, 31vw, 16rem);
+  line-height: 1;
+  color: var(--cream);
+  letter-spacing: 0.005em;
+  /* Top margin scales with the type so the party hat always clears the kicker. */
+  margin: calc(0.5em + 1rem) 0 clamp(0.5rem, 2vw, 1rem);
+  filter: drop-shadow(0 0.03em 0 rgba(107, 66, 38, 0.07));
+}
+
+.hero-o {
+  position: relative;
+  display: inline-block;
+  width: 0.84em;
+  height: 0.84em;
+  flex: none;
+  margin-bottom: 0.075em;
+  border-radius: 50%;
+  background: var(--cream);
+  box-shadow: 0 0.02em 0.05em rgba(107, 66, 38, 0.08);
+}
+
+.hero-o img {
+  position: absolute;
+  inset: 0.072em;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  object-position: 50% 44%;
+  /* Clip tight, then scale back up: crops the source's edge fringe without
+     letting the photo spill outside the cream ring. */
+  clip-path: circle(47%);
+  transform: scale(1.04);
+}
+
+.hero-n,
+.hero-e { display: inline-block; }
+
+/* --- the party hat: lilac cone, pink zigzag, white pompom + tassels ------ */
+
+.party-hat {
+  position: absolute;
+  left: -34%;
+  top: -62%;
+  width: 88%;
+  aspect-ratio: 120 / 150;
+  transform: rotate(-19deg);
+  transform-origin: 60% 100%;
+  background: var(--hat) no-repeat center / contain;
+  filter: drop-shadow(0 0.03em 0.04em rgba(107, 66, 38, 0.12));
+}
+
+/* --- title + script sub-line -------------------------------------------- */
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.7rem, 7.6vw, 3.5rem);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--brown);
+  margin: clamp(0.75rem, 3vw, 1.5rem) auto 0;
+  max-width: 16ch;
+}
+
+.hero-sub {
+  margin-top: clamp(0.9rem, 3.5vw, 1.4rem);
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+  line-height: 1.2;
+}
+
+/* Pink rule–heart–rule divider, straight from the invitation. */
+.hero-sub::before {
+  content: "♥";
+  display: block;
+  width: min(15rem, 74vw);
+  margin: 0 auto clamp(0.6rem, 2.5vw, 1rem);
+  color: var(--pink);
+  font-size: 0.82rem;
+  line-height: 1;
+  background:
+    linear-gradient(var(--pink), var(--pink)) left center / 38% 2px no-repeat,
+    linear-gradient(var(--pink), var(--pink)) right center / 38% 2px no-repeat;
+}
+
+.hero-sub .script {
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: 1.45em;
+  color: var(--marigold);
+}
+
+/* --------------------------------------------------------------------------
+   5. Page rhythm — empty landmarks that later tasks fill in
+   -------------------------------------------------------------------------- */
+
+main {
+  position: relative;
+  z-index: 1;
+  /* Overlap the hero by a hair so fractional layout heights can never leave a
+     sliver of the yellow page background showing at the seam. */
+  margin-top: -1px;
+}
+
+main > section {
+  min-height: clamp(170px, 27vh, 280px);
+  padding: clamp(2.5rem, 8vw, 4.5rem) clamp(1rem, 5vw, 2.5rem);
+  background: var(--cream);
+}
+
+#details { background: var(--cloud); }
+#photos  { background: var(--cream); }
+#rsvp    { background: linear-gradient(180deg, var(--cloud) 0%, var(--sun-soft) 100%); }
+
+/* --------------------------------------------------------------------------
+   6. Footer
+   -------------------------------------------------------------------------- */
+
+.footer {
+  position: relative;
+  z-index: 1;
+  background: var(--sun);
+  color: var(--brown);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: clamp(1.75rem, 6vw, 2.75rem) 1rem clamp(2rem, 7vw, 3rem);
+}
+
+/* --------------------------------------------------------------------------
+   7. Enhancements — 700px and up
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 700px) {
+  .balloon { display: block; }
+
+  .hero {
+    padding-top: clamp(3.5rem, 8vw, 6rem);
+    padding-bottom: clamp(6rem, 12vw, 9rem);
+  }
+
+  .hero-kicker {
+    max-width: none;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+  }
+
+  .hero-one { font-size: clamp(9rem, 22vw, 14rem); }
+
+  .hero-daisies {
+    background-image:
+      var(--daisy), var(--daisy), var(--daisy), var(--daisy),
+      var(--daisy), var(--daisy), var(--daisy), var(--daisy);
+    background-size: 118px, 68px, 92px, 52px, 104px, 60px, 76px, 46px;
+    background-position:
+      -34px 2%,
+      15% -20px,
+      calc(100% + 18px) 6%,
+      82% -12px,
+      -22px 86%,
+      calc(100% - 24px) 88%,
+      13% 58%,
+      93% 42%;
+  }
+
+  .hero::after { height: 76px; }
+  .hero::after {
+    background:
+      radial-gradient(circle at 44px 54px, var(--cream) 40px, rgba(255, 243, 220, 0) 43px)
+        0 0 / 88px 76px repeat-x,
+      linear-gradient(var(--cream), var(--cream)) 0 100% / 100% 26px no-repeat;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Enhancements — 1100px and up
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 1100px) {
+  .hero { padding-bottom: clamp(7rem, 11vw, 10rem); }
+
+  .hero-one { font-size: clamp(13rem, 21vw, 19rem); }
+
+  .hero-title { font-size: clamp(3rem, 4.2vw, 4.25rem); max-width: none; }
+
+  .hero-kicker { font-size: 1.4rem; letter-spacing: 0.46em; text-indent: 0.46em; }
+
+  .balloon-1 { top: 12%; left: 4%; }
+  .balloon-2 { top: 36%; left: 8%; }
+  .balloon-3 { top: 16%; right: 4.5%; }
+  .balloon-4 { top: 42%; right: 9%; }
+
+  main > section { min-height: 300px; }
+}
+
+/* --------------------------------------------------------------------------
+   9. Motion — decorative only, and only when the visitor welcomes it
+   -------------------------------------------------------------------------- */
+
+@keyframes drift-across {
+  from { transform: translateX(-30vw) scale(var(--s, 1)); }
+  to   { transform: translateX(130vw) scale(var(--s, 1)); }
+}
+
+@keyframes float-up-down {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -18px; }
+}
+
+@keyframes gentle-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-0.022em); }
+}
+
+@keyframes sparkle-pulse {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(0.78); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cloud {
+    animation: drift-across linear infinite;
+  }
+
+  .cloud-1 { --s: 0.85; animation-duration: 92s;  animation-delay: -12s; }
+  .cloud-2 { --s: 0.55; animation-duration: 128s; animation-delay: -70s; }
+  .cloud-3 { --s: 1.05; animation-duration: 156s; animation-delay: -34s; }
+  .cloud-4 { --s: 0.7;  animation-duration: 112s; animation-delay: -96s; }
+
+  .balloon { animation: float-up-down 7s ease-in-out infinite; }
+  .balloon-2 { animation-duration: 9s;  animation-delay: -2s; }
+  .balloon-3 { animation-duration: 8s;  animation-delay: -4s; }
+  .balloon-4 { animation-duration: 10s; animation-delay: -6s; }
+
+  .hero-o { animation: gentle-bob 5s ease-in-out infinite; }
+
+  .hero-kicker::before,
+  .hero-kicker::after { animation: sparkle-pulse 3.2s ease-in-out infinite; }
+  .hero-kicker::after { animation-delay: -1.6s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
