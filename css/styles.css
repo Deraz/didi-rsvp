@@ -19,6 +19,11 @@
   --daisy: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23FFFFFF'><ellipse cx='50' cy='27' rx='9.5' ry='22'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(36 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(72 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(108 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(144 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(180 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(216 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(252 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(288 50 50)'/><ellipse cx='50' cy='27' rx='9.5' ry='22' transform='rotate(324 50 50)'/></g><circle cx='50' cy='50' r='13.5' fill='%23E85D8A'/></svg>");
 
   --hat: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 150'><g fill='%23FFFFFF'><rect x='16' y='113' width='6.5' height='17' rx='3.2' transform='rotate(-19 19 113)'/><rect x='27' y='117' width='6.5' height='17' rx='3.2' transform='rotate(-14 30 117)'/><rect x='38' y='120' width='6.5' height='17' rx='3.2' transform='rotate(-8 41 120)'/><rect x='49' y='122' width='6.5' height='17' rx='3.2' transform='rotate(-3 52 122)'/><rect x='61' y='122' width='6.5' height='17' rx='3.2' transform='rotate(3 64 122)'/><rect x='72' y='120' width='6.5' height='17' rx='3.2' transform='rotate(8 75 120)'/><rect x='83' y='117' width='6.5' height='17' rx='3.2' transform='rotate(14 86 117)'/><rect x='94' y='113' width='6.5' height='17' rx='3.2' transform='rotate(19 97 113)'/></g><path d='M60 24 L106 118 Q60 133 14 118 Z' fill='%23A99BE0'/><path d='M29 99 Q39 90 49 99 T69 99 T89 100' fill='none' stroke='%23E85D8A' stroke-width='5.5' stroke-linecap='round'/><path d='M45 71 Q53 65 61 71' fill='none' stroke='%23E85D8A' stroke-width='4.5' stroke-linecap='round'/><g fill='%23FFFFFF' transform='translate(60 21)'><rect x='-13' y='-4' width='26' height='8' rx='4'/><rect x='-13' y='-4' width='26' height='8' rx='4' transform='rotate(45)'/><rect x='-13' y='-4' width='26' height='8' rx='4' transform='rotate(90)'/><rect x='-13' y='-4' width='26' height='8' rx='4' transform='rotate(135)'/><circle r='9'/></g></svg>");
+
+  /* A scalloped sun-cookie roundel — eight petal bumps plus a filled center
+     disc, echoing the sun cookies/pops in assets/theme/desserts-grid.png.
+     Reused as the .stat card background on the admin dashboard. */
+  --sun-cookie: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23FFC93C'><circle cx='88' cy='50' r='15'/><circle cx='77' cy='23' r='15'/><circle cx='50' cy='12' r='15'/><circle cx='23' cy='23' r='15'/><circle cx='12' cy='50' r='15'/><circle cx='23' cy='77' r='15'/><circle cx='50' cy='88' r='15'/><circle cx='77' cy='77' r='15'/><circle cx='50' cy='50' r='40'/></g></svg>");
 }
 
 /* --------------------------------------------------------------------------
@@ -1079,4 +1084,235 @@ main > section {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* --------------------------------------------------------------------------
+   14. Admin dashboard — the secret RSVP gate, stats, table, and wishes wall
+   -------------------------------------------------------------------------- */
+
+/* #gate and #dash are toggled via the `hidden` attribute in js/admin.js.
+   Neither is given an explicit `display` below, so the UA [hidden] rule
+   keeps working — see the .count-grid note in section 6 for what happens
+   when an author rule out-specifies it. These are belt-and-suspenders. */
+#gate[hidden],
+#dash[hidden] {
+  display: none;
+}
+
+#dash { background: var(--cloud); }
+
+#gate-form {
+  max-width: 22rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#gate-pass {
+  width: 100%;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--brown);
+  padding: 0.85em 1em;
+  border: none;
+  border-radius: 14px;
+  background: var(--cloud);
+  box-shadow: inset 0 0 0 2px rgba(107, 66, 38, 0.14);
+}
+
+#gate-pass::placeholder {
+  color: rgba(107, 66, 38, 0.4);
+  font-weight: 600;
+}
+
+#gate-pass:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--marigold);
+}
+
+/* Non-animated fallback: even with motion switched off (or mid-keyframe on
+   very first paint) the gate still visibly reacts to a wrong password. */
+#gate-form.shake {
+  box-shadow: 0 0 0 3px var(--pink);
+}
+
+@keyframes shake-x {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #gate-form.shake {
+    animation: shake-x 0.5s ease;
+  }
+}
+
+#dash .section-title:not(:first-child) {
+  margin-top: clamp(2.25rem, 7vw, 3rem);
+}
+
+/* Sun-cookie stat roundels, flower-bumped like the cookies/pops in
+   assets/theme/desserts-grid.png. filter: drop-shadow (rather than
+   box-shadow) follows the scalloped alpha shape instead of the square box. */
+.stat-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.5rem, 3vw, 1rem);
+  max-width: 34rem;
+  margin: 0 auto clamp(2rem, 6vw, 2.5rem);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15em;
+  width: clamp(6rem, 24vw, 7.5rem);
+  aspect-ratio: 1;
+  padding: 0.5em;
+  background: var(--sun-cookie) no-repeat center / 82% 82%;
+  filter:
+    drop-shadow(0 3px 0 rgba(107, 66, 38, 0.1))
+    drop-shadow(0 8px 14px rgba(107, 66, 38, 0.18));
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 5vw, 1.6rem);
+  line-height: 1;
+  color: var(--brown);
+}
+
+.stat > span:last-child {
+  max-width: 5rem;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: clamp(0.55rem, 2.2vw, 0.68rem);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--brown);
+}
+
+#refresh {
+  display: flex;
+  width: fit-content;
+  margin: 0 auto clamp(1.75rem, 6vw, 2.5rem);
+  background: var(--lilac);
+  border: none;
+  cursor: pointer;
+}
+
+/* Mobile-friendly table: the wrapper scrolls horizontally on its own so the
+   6-column table never forces the page itself to scroll sideways (body
+   keeps overflow-x: hidden in section 2). */
+.table-scroll {
+  max-width: 60rem;
+  margin: 0 auto clamp(2rem, 6vw, 3rem);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 16px;
+  box-shadow:
+    0 4px 0 rgba(107, 66, 38, 0.08),
+    0 10px 20px rgba(107, 66, 38, 0.12);
+}
+
+.rsvp-table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+  background: var(--cloud);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+}
+
+.rsvp-table th,
+.rsvp-table td {
+  padding: 0.75em 0.9em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.rsvp-table th:last-child,
+.rsvp-table td:last-child {
+  white-space: normal;
+  min-width: 12rem;
+}
+
+.rsvp-table thead th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cloud);
+  background: var(--marigold);
+}
+
+.rsvp-table tbody tr:nth-child(even) {
+  background: rgba(255, 201, 60, 0.14);
+}
+
+.rsvp-table tbody tr + tr {
+  border-top: 1px solid rgba(107, 66, 38, 0.08);
+}
+
+/* Cream speech-bubble wishes, tail pointing down toward the reader. */
+.wishes-wall {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
+.wish-card {
+  position: relative;
+  margin: 0 0 0.4rem;
+  padding: 1.1em 1.3em;
+  background: var(--cream);
+  border: none;
+  border-radius: 18px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-style: normal;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--brown);
+  box-shadow:
+    0 3px 0 rgba(107, 66, 38, 0.08),
+    0 8px 16px rgba(107, 66, 38, 0.14);
+}
+
+.wish-card::after {
+  content: "";
+  position: absolute;
+  left: 1.6rem;
+  bottom: -9px;
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 11px solid var(--cream);
+}
+
+@media (min-width: 700px) {
+  .stat { width: 7rem; }
+  .stat-cards { max-width: 42rem; gap: 1.25rem; }
+  .rsvp-table { font-size: 0.95rem; }
+  .wishes-wall { display: grid; grid-template-columns: repeat(2, 1fr); max-width: 44rem; }
+}
+
+@media (min-width: 1100px) {
+  .stat { width: 7.5rem; }
+  .stat-cards { max-width: 48rem; }
+  .table-scroll { max-width: 70rem; }
+  .wishes-wall { max-width: 58rem; }
 }

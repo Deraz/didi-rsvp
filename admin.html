@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Didi's secret garden 🤫</title>
+  <meta name="theme-color" content="#FFC93C" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Caveat:wght@700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="admin">
+    <section id="gate">
+      <h1 class="section-title">whisper the magic word 🤫</h1>
+      <form id="gate-form">
+        <input id="gate-pass" type="password" autocomplete="off" placeholder="magic word" />
+        <button class="btn btn-submit" type="submit">open sesame ☀️</button>
+        <p class="form-msg" id="gate-msg" role="status"></p>
+      </form>
+    </section>
+    <section id="dash" hidden>
+      <h1 class="section-title">Didi’s RSVP dashboard</h1>
+      <div class="stat-cards">
+        <div class="stat"><span class="stat-num" id="st-families">0</span><span>families</span></div>
+        <div class="stat"><span class="stat-num" id="st-yes">0</span><span>coming</span></div>
+        <div class="stat"><span class="stat-num" id="st-no">0</span><span>can’t make it</span></div>
+        <div class="stat"><span class="stat-num" id="st-adults">0</span><span>grown-ups</span></div>
+        <div class="stat"><span class="stat-num" id="st-kids">0</span><span>little ones</span></div>
+      </div>
+      <button class="btn" id="refresh">↻ refresh</button>
+      <div class="table-scroll">
+        <table class="rsvp-table">
+          <thead><tr><th>When</th><th>Name</th><th>Coming</th><th>Adults</th><th>Kids</th><th>Wish</th></tr></thead>
+          <tbody id="rsvp-rows"></tbody>
+        </table>
+      </div>
+      <h2 class="section-title">wishes wall 💛</h2>
+      <div id="wishes" class="wishes-wall"></div>
+    </section>
+  </main>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
