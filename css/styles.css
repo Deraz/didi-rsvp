@@ -628,6 +628,13 @@ main > section {
   gap: clamp(1.1rem, 4vw, 1.5rem);
 }
 
+/* Same trap as .count-grid/.counts: an explicit `display` here out-specifies
+   the UA [hidden] rule, so `form.hidden = true` on submit success needs this
+   guard or the form stays visible next to the done message. */
+#rsvp-form[hidden] {
+  display: none;
+}
+
 .field {
   display: flex;
   flex-direction: column;
