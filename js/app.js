@@ -1,5 +1,5 @@
 import { CONFIG } from "./config.js";
-import { countdownParts } from "./lib.js";
+import { countdownParts, toGoogleCalendarUrl, toIcs } from "./lib.js";
 
 function startCountdown() {
   const els = {
@@ -27,5 +27,21 @@ function startCountdown() {
   const timer = setInterval(tick, 1000);
   tick();
 }
+
+function setupDetails() {
+  const p = CONFIG.party;
+  document.getElementById("det-date").textContent = p.dateLabel;
+  document.getElementById("det-time").textContent = p.timeLabel;
+  document.getElementById("det-venue").textContent = p.venueName;
+  document.getElementById("det-maps").href = p.mapsUrl;
+  const event = {
+    title: p.calendarTitle, startIso: p.startIso, endIso: p.endIso,
+    location: p.venueName, description: p.calendarDescription,
+  };
+  document.getElementById("det-gcal").href = toGoogleCalendarUrl(event);
+  const blob = new Blob([toIcs(event)], { type: "text/calendar" });
+  document.getElementById("det-ics").href = URL.createObjectURL(blob);
+}
+setupDetails();
 
 startCountdown();
