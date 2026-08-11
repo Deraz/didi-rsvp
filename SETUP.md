@@ -63,11 +63,11 @@ Save this password somewhere safe — you'll need it later to view the RSVP list
 5. A popup may ask for permission — review it and click **"Authorize"** or **"Allow"**
    - You may need to select your Google account again
 6. The deployment succeeds — a confirmation message appears
-7. **Copy the full URL** from the message — it should look like:
+7. **Copy the full URL** from the message — it will look like:
    ```
-   https://script.google.com/macros/d/[LONG_ID]/usercopy
+   https://script.google.com/macros/s/[LONG_ID]/exec
    ```
-   or end in `/exec`
+   (The URL contains your Apps Script ID and ends with `/exec`)
 
 Keep this URL handy — you'll paste it in the next step.
 
@@ -77,9 +77,9 @@ Keep this URL handy — you'll paste it in the next step.
 2. Find the line with `appsScriptUrl: ""`
 3. Replace the empty quotes with your deployed URL:
    ```js
-   appsScriptUrl: "https://script.google.com/macros/d/[LONG_ID]/usercopy",
+   appsScriptUrl: "https://script.google.com/macros/s/[LONG_ID]/exec",
    ```
-   (Paste your full URL between the quotes)
+   (Paste your full URL from Step 4 between the quotes)
 4. **Save** the file
 
 Your website is now connected to the backend.
