@@ -1,7 +1,7 @@
 // Single source of truth for party facts. Edit here only.
 export const CONFIG = {
   // Paste the Apps Script /exec URL here after deploying (see SETUP.md).
-  appsScriptUrl: "",
+  appsScriptUrl: "https://script.google.com/macros/s/AKfycbyXeXZ66f1VXtMMzhfq1SOZRnc0yf-NAWbmjjKooBN_L0I7KXhvajj07NmzQXeeLtddGA/exec",
   party: {
     childName: "Farida",
     nickname: "Didi",
