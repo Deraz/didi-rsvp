@@ -44,4 +44,21 @@ function setupDetails() {
 }
 setupDetails();
 
+function setupPhotos() {
+  const section = document.getElementById("photos");
+  if (CONFIG.photos.length === 0) { section.hidden = true; return; }
+  const grid = document.getElementById("photo-grid");
+  for (const photo of CONFIG.photos) {
+    const fig = document.createElement("figure");
+    fig.className = "photo-card";
+    const img = document.createElement("img");
+    img.src = photo.src; img.alt = photo.caption ?? ""; img.loading = "lazy";
+    const cap = document.createElement("figcaption");
+    cap.textContent = photo.caption ?? "";
+    fig.append(img, cap);
+    grid.append(fig);
+  }
+}
+setupPhotos();
+
 startCountdown();
