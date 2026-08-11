@@ -37,7 +37,17 @@
   </header>
 
   <main>
-    <section id="countdown" aria-label="Countdown to the party"></section>
+    <section id="countdown" aria-label="Countdown to the party">
+      <h2 class="section-title"><span aria-hidden="true">✳</span> counting down <span aria-hidden="true">✳</span></h2>
+      <div class="count-grid" role="timer">
+        <div class="count-chip"><span class="count-num" id="cd-days">–</span><span class="count-label">days</span></div>
+        <div class="count-chip"><span class="count-num" id="cd-hours">–</span><span class="count-label">hours</span></div>
+        <div class="count-chip"><span class="count-num" id="cd-minutes">–</span><span class="count-label">minutes</span></div>
+        <div class="count-chip"><span class="count-num" id="cd-seconds">–</span><span class="count-label">seconds</span></div>
+      </div>
+      <p class="count-until">until Didi turns ONE!</p>
+      <p class="count-done" hidden>It’s party time! 🎉☀️</p>
+    </section>
     <section id="details" aria-label="Party details"></section>
     <section id="photos" aria-label="Photo moments"></section>
     <section id="rsvp" aria-label="RSVP"></section>
