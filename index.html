@@ -65,7 +65,44 @@
       <h2 class="section-title"><span aria-hidden="true">✳</span> photo moments <span aria-hidden="true">✳</span></h2>
       <div class="photo-grid" id="photo-grid"></div>
     </section>
-    <section id="rsvp" aria-label="RSVP"></section>
+    <section id="rsvp" aria-label="RSVP">
+      <h2 class="section-title">will you join the sunshine?</h2>
+      <form id="rsvp-form" novalidate>
+        <label class="field">
+          <span>Family name</span>
+          <input name="name" type="text" maxlength="100" required placeholder="The Sunshine Family" />
+        </label>
+        <fieldset class="attending">
+          <legend>Coming to the party?</legend>
+          <label class="toggle yes"><input type="radio" name="attending" value="yes" /> <span>YES! ☀️</span></label>
+          <label class="toggle no"><input type="radio" name="attending" value="no" /> <span>sadly no 🌧️</span></label>
+        </fieldset>
+        <div class="counts" id="rsvp-counts" hidden>
+          <div class="stepper" data-for="adults">
+            <span>Grown-ups</span>
+            <button type="button" class="step-btn" data-step="-1" aria-label="fewer adults">−</button>
+            <input name="adults" type="number" inputmode="numeric" min="1" max="20" value="1" />
+            <button type="button" class="step-btn" data-step="1" aria-label="more adults">+</button>
+          </div>
+          <div class="stepper" data-for="kids">
+            <span>Little ones</span>
+            <button type="button" class="step-btn" data-step="-1" aria-label="fewer kids">−</button>
+            <input name="kids" type="number" inputmode="numeric" min="0" max="20" value="0" />
+            <button type="button" class="step-btn" data-step="1" aria-label="more kids">+</button>
+          </div>
+        </div>
+        <label class="field">
+          <span>A birthday wish for Farida 💛</span>
+          <textarea name="wish" maxlength="500" rows="3" placeholder="You are our sunshine…"></textarea>
+        </label>
+        <button type="submit" class="btn btn-submit"><span class="sun-icon" aria-hidden="true">☀️</span> Send RSVP</button>
+        <p class="form-msg" id="rsvp-msg" role="status"></p>
+      </form>
+      <div class="rsvp-done" id="rsvp-done" hidden>
+        <p class="done-yes" hidden>Yaaay! Didi can’t wait to see you! ☀️🎉</p>
+        <p class="done-no" hidden>We’ll miss you — thanks for letting us know 💛</p>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">made with ☀️ for Farida</footer>

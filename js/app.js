@@ -1,5 +1,5 @@
 import { CONFIG } from "./config.js";
-import { countdownParts, toGoogleCalendarUrl, toIcs } from "./lib.js";
+import { countdownParts, toGoogleCalendarUrl, toIcs, validateRsvp } from "./lib.js";
 
 function startCountdown() {
   const els = {
@@ -60,5 +60,78 @@ function setupPhotos() {
   }
 }
 setupPhotos();
+
+function setupRsvp() {
+  const form = document.getElementById("rsvp-form");
+  const counts = document.getElementById("rsvp-counts");
+  const msg = document.getElementById("rsvp-msg");
+  const done = document.getElementById("rsvp-done");
+
+  form.addEventListener("change", () => {
+    const attending = form.elements.attending.value;
+    counts.hidden = attending !== "yes";
+  });
+
+  for (const btn of form.querySelectorAll(".step-btn")) {
+    btn.addEventListener("click", () => {
+      const input = btn.parentElement.querySelector("input");
+      const next = Number(input.value || 0) + Number(btn.dataset.step);
+      input.value = Math.min(Number(input.max), Math.max(Number(input.min), next));
+    });
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    msg.textContent = "";
+    const result = validateRsvp({
+      name: form.elements.name.value,
+      attending: form.elements.attending.value,
+      adults: form.elements.adults.value,
+      kids: form.elements.kids.value,
+      wish: form.elements.wish.value,
+    });
+    if (!result.ok) { msg.textContent = result.error; return; }
+    if (!CONFIG.appsScriptUrl) {
+      msg.textContent = "RSVP isn’t open quite yet — try again soon! ☁️";
+      return;
+    }
+    const submitBtn = form.querySelector(".btn-submit");
+    submitBtn.disabled = true;
+    msg.textContent = "Sending sunshine… ☀️";
+    try {
+      const res = await fetch(CONFIG.appsScriptUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(result.value),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || "server said no");
+      form.hidden = true;
+      done.hidden = false;
+      done.querySelector(result.value.attending === "yes" ? ".done-yes" : ".done-no").hidden = false;
+      burstConfetti();
+    } catch {
+      msg.textContent = "Oops — the sun hid for a second. Please try again! 🌥️";
+      submitBtn.disabled = false;
+    }
+  });
+}
+
+function burstConfetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const colors = ["#FFC93C", "#E8842C", "#E85D8A", "#A99BE0", "#FFFFFF"];
+  for (let i = 0; i < 90; i++) {
+    const bit = document.createElement("span");
+    bit.className = "confetti";
+    bit.style.left = `${Math.random() * 100}vw`;
+    bit.style.background = colors[i % colors.length];
+    bit.style.animationDelay = `${Math.random() * 0.4}s`;
+    bit.style.animationDuration = `${2 + Math.random() * 1.5}s`;
+    bit.style.setProperty("--drift", `${(Math.random() - 0.5) * 40}vw`);
+    document.body.append(bit);
+    setTimeout(() => bit.remove(), 4000);
+  }
+}
+setupRsvp();
 
 startCountdown();

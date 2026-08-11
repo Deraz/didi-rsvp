@@ -617,7 +617,271 @@ main > section {
 }
 
 /* --------------------------------------------------------------------------
-   9. Footer
+   9. RSVP — form, toggle pills, steppers, submit sun, and confetti
+   -------------------------------------------------------------------------- */
+
+#rsvp-form {
+  max-width: 26rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.1rem, 4vw, 1.5rem);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--brown);
+}
+
+.field input[type="text"],
+.field textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--brown);
+  padding: 0.85em 1em;
+  border: none;
+  border-radius: 14px;
+  background: var(--cloud);
+  box-shadow: inset 0 0 0 2px rgba(107, 66, 38, 0.14);
+  resize: vertical;
+}
+
+.field input[type="text"]::placeholder,
+.field textarea::placeholder {
+  color: rgba(107, 66, 38, 0.4);
+  font-weight: 600;
+}
+
+.field input[type="text"]:focus,
+.field textarea:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--marigold);
+}
+
+.attending {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.attending legend {
+  width: 100%;
+  padding: 0 0 0.2em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--brown);
+}
+
+/* The pill is the <label>; its radio is visually hidden but stays in the a11y
+   tree and keyboard-focusable, so :has(input:checked) drives the fill. */
+.toggle {
+  position: relative;
+  flex: 1 1 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9em 0.5em;
+  border-radius: 999px;
+  background: var(--cloud);
+  box-shadow: inset 0 0 0 2px rgba(107, 66, 38, 0.14);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--brown);
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, translate 0.15s ease;
+}
+
+.toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle:has(input:focus-visible) {
+  outline: 3px solid var(--brown);
+  outline-offset: 3px;
+}
+
+.toggle.yes:has(input:checked) {
+  background: var(--sun);
+  color: var(--brown);
+  box-shadow: none;
+  translate: 0 -2px;
+}
+
+.toggle.no:has(input:checked) {
+  background: var(--lilac);
+  color: var(--cloud);
+  box-shadow: none;
+  translate: 0 -2px;
+}
+
+.counts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+/* Same trap as .count-grid: an explicit `display` here would out-specify the
+   UA [hidden] rule, so it needs the same guard once `counts.hidden` is set. */
+.counts[hidden] {
+  display: none;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7em 0.9em;
+  background: var(--cloud);
+  border-radius: 14px;
+}
+
+.stepper > span {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--brown);
+}
+
+.stepper input {
+  width: 2.6em;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--marigold);
+  border: none;
+  background: transparent;
+  -moz-appearance: textfield;
+}
+
+.stepper input::-webkit-outer-spin-button,
+.stepper input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.step-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1em;
+  height: 2.1em;
+  border: none;
+  border-radius: 50%;
+  background: var(--sun-soft);
+  color: var(--brown);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease, translate 0.15s ease;
+}
+
+.step-btn:hover,
+.step-btn:focus-visible {
+  background: var(--sun);
+  translate: 0 -1px;
+}
+
+.btn-submit {
+  align-self: center;
+  margin-top: 0.5rem;
+  background: var(--marigold);
+}
+
+.sun-icon {
+  display: inline-block;
+  transition: translate 0.2s ease;
+}
+
+.btn-submit:hover .sun-icon,
+.btn-submit:focus-visible .sun-icon {
+  translate: 0 -3px;
+}
+
+.btn-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  translate: none;
+}
+
+.btn-submit:disabled .sun-icon {
+  translate: none;
+}
+
+.form-msg {
+  min-height: 1.4em;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--marigold);
+}
+
+.rsvp-done {
+  max-width: 26rem;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 5vw, 1.6rem);
+  color: var(--marigold);
+}
+
+.rsvp-done[hidden] {
+  display: none;
+}
+
+.rsvp-done p[hidden] {
+  display: none;
+}
+
+/* Confetti bits are appended straight to <body> by burstConfetti(); since
+   they're the only <span> children there, nth-of-type alternates shape
+   between the confetti bits themselves regardless of the page's other
+   direct-child siblings (header/main/footer). */
+.confetti {
+  position: fixed;
+  top: -20px;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  z-index: 20;
+  border-radius: 2px;
+  pointer-events: none;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+.confetti:nth-of-type(3n) {
+  border-radius: 50%;
+}
+
+@keyframes confetti-fall {
+  to { transform: translateY(100vh) translateX(var(--drift)) rotate(720deg); }
+}
+
+/* --------------------------------------------------------------------------
+   10. Footer
    -------------------------------------------------------------------------- */
 
 .footer {
@@ -634,7 +898,7 @@ main > section {
 }
 
 /* --------------------------------------------------------------------------
-   10. Enhancements — 700px and up
+   11. Enhancements — 700px and up
    -------------------------------------------------------------------------- */
 
 @media (min-width: 700px) {
@@ -690,10 +954,16 @@ main > section {
   .btn { font-size: 1rem; padding: 0.9em 1.6em; }
 
   .photo-grid { grid-template-columns: repeat(3, 1fr); max-width: 50rem; gap: 2.25rem 1.75rem; }
+
+  #rsvp-form,
+  .rsvp-done { max-width: 30rem; }
+
+  .field,
+  .attending legend { font-size: 1rem; }
 }
 
 /* --------------------------------------------------------------------------
-   11. Enhancements — 1100px and up
+   12. Enhancements — 1100px and up
    -------------------------------------------------------------------------- */
 
 @media (min-width: 1100px) {
@@ -718,10 +988,13 @@ main > section {
   .count-label { font-size: 0.95rem; letter-spacing: 0.1em; }
 
   .photo-grid { grid-template-columns: repeat(4, 1fr); max-width: 66rem; }
+
+  #rsvp-form,
+  .rsvp-done { max-width: 32rem; }
 }
 
 /* --------------------------------------------------------------------------
-   12. Motion — decorative only, and only when the visitor welcomes it
+   13. Motion — decorative only, and only when the visitor welcomes it
    -------------------------------------------------------------------------- */
 
 @keyframes drift-across {
@@ -782,6 +1055,12 @@ main > section {
   .btn:hover,
   .btn:focus-visible {
     animation: btn-wobble 0.4s ease-in-out;
+  }
+
+  /* burstConfetti() already checks matchMedia before spawning any .confetti
+     bits, so this is belt-and-suspenders: even a stray bit stays inert. */
+  .confetti {
+    animation-name: confetti-fall;
   }
 }
 
