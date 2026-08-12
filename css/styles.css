@@ -290,11 +290,11 @@ img { max-width: 100%; }
 
 .party-hat {
   position: absolute;
-  left: -15%;
-  top: -31%;
-  width: 74%;
+  left: 8%;
+  top: -71%;
+  width: 99%;
   aspect-ratio: 120 / 150;
-  transform: rotate(-19deg);
+  transform: rotate(-12deg);
   transform-origin: 60% 100%;
   background: var(--hat) no-repeat center / contain;
   filter: drop-shadow(0 0.03em 0.04em rgba(107, 66, 38, 0.12));

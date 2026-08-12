@@ -111,7 +111,7 @@ function setupRsvp() {
       done.querySelector(result.value.attending === "yes" ? ".done-yes" : ".done-no").hidden = false;
       burstConfetti();
     } catch {
-      msg.textContent = "Oops — the sun hid for a second. Please try again! 🌥️ (Already tried? No worries — we only count your latest answer.)";
+      msg.textContent = "Oops — the sun hid for a second. Please try again! 🌥️ (No worries — we only count your latest answer.)";
       submitBtn.disabled = false;
     }
   });
