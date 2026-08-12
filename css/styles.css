@@ -34,6 +34,17 @@
 
 html { -webkit-text-size-adjust: 100%; }
 
+/* Belt-and-suspenders for every [hidden] element in the app: an author rule
+   that sets `display` at equal-or-lower specificity than the UA [hidden]
+   rule silently wins and leaves the element visible (see the .count-grid
+   note in section 6 for the concrete trap). `!important` here means any
+   future `display` rule on a [hidden] element is safe by default; the
+   targeted `X[hidden] { display: none; }` overrides elsewhere in this file
+   predate this rule and are left in place as documentation of the trap. */
+[hidden] {
+  display: none !important;
+}
+
 body {
   background: var(--sun);
   color: var(--brown);
@@ -542,7 +553,13 @@ main > section {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4em;
+  /* Emoji-only buttons (e.g. #refresh, no icon span) sit ~4px shorter than
+     ones with a taller inline glyph, which drops them under the 44px tap
+     target minimum — min-height keeps every .btn variant at 44px regardless
+     of its content's natural line box. */
+  min-height: 44px;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(0.85rem, 3.2vw, 0.95rem);
@@ -793,8 +810,9 @@ main > section {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.1em;
-  height: 2.1em;
+  /* 2.5em keeps the tap target at the 44px minimum (2.1em was ~37px). */
+  width: 2.5em;
+  height: 2.5em;
   border: none;
   border-radius: 50%;
   background: var(--sun-soft);
