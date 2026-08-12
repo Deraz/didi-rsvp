@@ -227,7 +227,9 @@ img { max-width: 100%; }
 
 .hero-kicker::before,
 .hero-kicker::after {
-  content: "✳";
+  /* U+273B has no emoji presentation, unlike ✳ which iOS renders as a
+     green emoji regardless of CSS color. */
+  content: "✻";
   display: inline-block;
   color: var(--pink);
   font-size: 0.95em;
@@ -288,9 +290,9 @@ img { max-width: 100%; }
 
 .party-hat {
   position: absolute;
-  left: -34%;
-  top: -62%;
-  width: 88%;
+  left: -15%;
+  top: -31%;
+  width: 74%;
   aspect-ratio: 120 / 150;
   transform: rotate(-19deg);
   transform-origin: 60% 100%;
@@ -1256,6 +1258,21 @@ main > section {
   padding: 0.75em 0.9em;
   text-align: left;
   white-space: nowrap;
+}
+
+/* Older duplicate submissions: kept for the record, visibly out of the count. */
+.rsvp-table tr.superseded td {
+  opacity: 0.45;
+}
+
+.superseded-tag {
+  display: block;
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--marigold);
+  opacity: 1;
 }
 
 .rsvp-table th:last-child,

@@ -35,13 +35,26 @@ function render(rows) {
 
   const tbody = document.getElementById("rsvp-rows");
   tbody.textContent = "";
+  // Older submissions from the same family stay listed (audit trail) but are
+  // dimmed and tagged, so the table visibly matches the deduped stats above.
+  const seen = new Set();
   for (const r of newestFirst) {
     const tr = document.createElement("tr");
+    const key = String(r.name).trim().toLowerCase();
+    const superseded = seen.has(key);
+    seen.add(key);
     const when = new Date(r.timestamp).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" });
     for (const cell of [when, r.name, r.attending, r.adults, r.kids, r.wish]) {
       const td = document.createElement("td");
       td.textContent = cell ?? "";
       tr.append(td);
+    }
+    if (superseded) {
+      tr.className = "superseded";
+      const tag = document.createElement("span");
+      tag.className = "superseded-tag";
+      tag.textContent = "older entry — not counted";
+      tr.children[1].append(tag);
     }
     tbody.append(tr);
   }
