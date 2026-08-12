@@ -3,11 +3,16 @@ import { CONFIG } from "./config.js";
 const gate = document.getElementById("gate");
 const dash = document.getElementById("dash");
 const gateMsg = document.getElementById("gate-msg");
+const dashMsg = document.getElementById("dash-msg");
 
 async function fetchRows(password) {
   const url = `${CONFIG.appsScriptUrl}?action=list&password=${encodeURIComponent(password)}`;
   const res = await fetch(url);
-  return res.json();
+  const data = await res.json();
+  // Defensive: blank sheet rows (owner cleared cells) can still come back from
+  // the live script until it's redeployed with the matching server-side filter.
+  if (data.ok) data.rows = data.rows.filter((r) => String(r.name).trim());
+  return data;
 }
 
 // Latest entry per (case-insensitive, trimmed) name wins — families may
@@ -76,8 +81,17 @@ document.getElementById("gate-form").addEventListener("submit", (e) => {
   unlock(document.getElementById("gate-pass").value);
 });
 document.getElementById("refresh").addEventListener("click", async () => {
-  const data = await fetchRows(sessionStorage.getItem("didi-pass") ?? "");
-  if (data.ok) render(data.rows);
+  try {
+    const data = await fetchRows(sessionStorage.getItem("didi-pass") ?? "");
+    if (data.ok) {
+      render(data.rows);
+      dashMsg.textContent = "";
+    } else {
+      dashMsg.textContent = "Hmm, that didn’t refresh — try again in a moment ☁️";
+    }
+  } catch {
+    dashMsg.textContent = "Couldn’t reach the sunshine servers — try again ☁️";
+  }
 });
 const saved = sessionStorage.getItem("didi-pass");
 if (saved) unlock(saved);

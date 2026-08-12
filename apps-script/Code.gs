@@ -46,7 +46,9 @@ function doGet(e) {
       return json_({ ok: false, error: "wrong password" });
     }
     var values = getSheet_().getDataRange().getValues();
-    var rows = values.slice(1).map(function (r) {
+    var rows = values.slice(1).filter(function (r) {
+      return String(r[1]).trim();
+    }).map(function (r) {
       return { timestamp: r[0], name: r[1], attending: r[2], adults: r[3], kids: r[4], wish: r[5] };
     });
     return json_({ ok: true, rows: rows });

@@ -12,8 +12,13 @@ const TYPES = {
 createServer(async (req, res) => {
   let path = decodeURIComponent(new URL(req.url, "http://x").pathname);
   if (path.endsWith("/")) path += "index.html";
+  const normalized = normalize(path);
+  if (normalized.split(/[\\/]/).includes("..")) {
+    res.writeHead(404); res.end("not found");
+    return;
+  }
   try {
-    const body = await readFile(join(process.cwd(), normalize(path)));
+    const body = await readFile(join(process.cwd(), normalized));
     res.writeHead(200, { "content-type": TYPES[extname(path)] ?? "application/octet-stream" });
     res.end(body);
   } catch {
