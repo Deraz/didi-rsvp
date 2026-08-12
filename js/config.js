@@ -10,11 +10,11 @@ export const CONFIG = {
     dateLabel: "Friday, 28th August",
     timeLabel: "6:30 PM",
     venueName: "Family Park, El Rehab",
-    mapsUrl: "https://maps.app.goo.gl/6SVExxStf4ZbmpAt7",
+    mapsUrl: "https://maps.app.goo.gl/Lk7kdvtxND39xYbs6",
     calendarTitle: "Farida's 1st Birthday 🎂☀️",
     calendarDescription:
       "A little sunshine is turning ONE! Join us at Family Park, El Rehab.\n" +
-      "Map: https://maps.app.goo.gl/6SVExxStf4ZbmpAt7",
+      "Map: https://maps.app.goo.gl/Lk7kdvtxND39xYbs6",
   },
   // e.g. { src: "assets/photos/month-01.jpg", caption: "1 month" }
   photos: [],
